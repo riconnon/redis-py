@@ -837,6 +837,11 @@ class PubSub:
         return bool(self.channels or self.patterns)
 
     async def execute_command(self, *args: EncodableT):
+        await asyncio.shield(
+            self._execute_command(*args)
+        )
+
+    async def _execute_command(self, *args: EncodableT):
         """Execute a publish/subscribe command"""
 
         # NOTE: don't parse the response in this function -- it could pull a
